@@ -24,7 +24,8 @@ body {
 
 #app {
     display: flex;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh; /* Altura dinâmica da tela para evitar bugs de mobile */
     width: 100vw;
 }
 
@@ -85,7 +86,7 @@ body {
 .sidebar-content {
     flex: 1;
     overflow-y: auto;
-    padding: 24px;
+    padding: 16px 24px 40px 24px; /* Mais espaço no fundo para as ferramentas SIG não sumirem */
 }
 
 /* Scrollbar Customization */
@@ -540,6 +541,7 @@ body {
         width: 320px;
         max-width: 85vw;
         height: 100vh;
+        height: 100dvh;
         z-index: 3000;
         transition: transform 0.3s ease;
     }
