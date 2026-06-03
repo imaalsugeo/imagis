@@ -323,6 +323,18 @@ L.control.scale({
     position: 'bottomleft'
 }).addTo(map);
 
+// Controle de Localização do Usuário (GPS)
+L.control.locate({
+    position: 'bottomright',
+    strings: {
+        title: "Mostrar minha localização"
+    },
+    locateOptions: {
+        maxZoom: 16,
+        enableHighAccuracy: true
+    }
+}).addTo(map);
+
 // Change Basemap
 let currentBasemap = 'osm';
 
