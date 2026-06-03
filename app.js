@@ -754,3 +754,33 @@ kmlUploadInput.addEventListener('change', (e) => {
     
     reader.readAsText(file);
 });
+
+// ============================================================
+// Responsividade: Mobile Menu Toggle
+// ============================================================
+const mobileBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.getElementById('sidebar');
+
+mobileBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-open');
+    
+    // Trocar ícone
+    const icon = mobileBtn.querySelector('i');
+    if (sidebar.classList.contains('sidebar-open')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+    } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+    }
+});
+
+// Fechar menu ao clicar no mapa em telas pequenas
+map.on('click', () => {
+    if (window.innerWidth <= 768 && sidebar.classList.contains('sidebar-open')) {
+        sidebar.classList.remove('sidebar-open');
+        const icon = mobileBtn.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+    }
+});
