@@ -1,0 +1,496 @@
+:root {
+    --bg-dark: #0f172a;
+    --panel-bg: rgba(15, 23, 42, 0.85);
+    --panel-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --font-main: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Map Container */
+#map {
+    flex: 1;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Sidebar / Glassmorphism Panel */
+#sidebar {
+    width: 380px;
+    height: 100%;
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-right: 1px solid var(--panel-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid var(--panel-border);
+}
+
+.logos-container {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.logo {
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
+}
+
+.sidebar-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+/* Scrollbar Customization */
+.sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+}
+
+.control-group {
+    margin-bottom: 24px;
+}
+
+.control-group h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+}
+
+.divider {
+    height: 1px;
+    background: var(--panel-border);
+    margin: 20px 0;
+}
+
+/* Radio Buttons for Basemap */
+.basemap-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.radio-container:hover {
+    color: var(--text-primary);
+}
+
+.radio-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.radio-container:hover input ~ .radio-checkmark {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.radio-container input:checked ~ .radio-checkmark {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.radio-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 5px;
+    left: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+}
+
+.radio-container input:checked ~ .radio-checkmark:after {
+    display: block;
+}
+
+/* Accordions */
+.category-accordion {
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.category-accordion:hover {
+    border-color: rgba(255,255,255,0.1);
+}
+
+.category-accordion summary {
+    padding: 12px 16px;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.category-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.category-accordion summary::after {
+    content: '\f078';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+.category-accordion[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.layer-list {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Checkboxes for Layers */
+.layer-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.layer-item:hover {
+    color: var(--text-primary);
+}
+
+.layer-item input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.layer-item:hover input ~ .checkmark {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.layer-item input:checked ~ .checkmark {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 3px;
+    height: 7px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.layer-item input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.layer-color-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: auto;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Loading Indicator */
+#loading-indicator {
+    padding: 12px 24px;
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    font-size: 0.9rem;
+    text-align: center;
+    border-top: 1px solid var(--panel-border);
+    transition: opacity 0.3s;
+}
+
+#loading-indicator.hidden {
+    display: none;
+}
+
+/* Leaflet Customizations for Dark Mode */
+.leaflet-container {
+    background-color: #1a1a2e;
+}
+.leaflet-control-zoom a {
+    background-color: var(--panel-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--panel-border) !important;
+    backdrop-filter: blur(4px);
+}
+.leaflet-control-zoom a:hover {
+    background-color: rgba(255,255,255,0.1) !important;
+}
+
+/* ============================================================ */
+/* Layer item wrapper: checkbox label + download button         */
+/* ============================================================ */
+.layer-item-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.layer-item-wrapper .layer-item {
+    flex: 1;
+    min-width: 0;
+}
+
+.btn-download-kml {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.06);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    font-size: 0.7rem;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-download-kml:hover {
+    background: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+    border-color: rgba(59, 130, 246, 0.5);
+    transform: scale(1.1);
+}
+
+.btn-download-kml:active {
+    transform: scale(0.95);
+}
+
+.btn-download-kml.downloading {
+    animation: spin 0.8s linear infinite;
+    pointer-events: none;
+    color: #93c5fd;
+}
+
+.btn-download-kml.downloading i::before {
+    content: "\f110"; /* fa-spinner */
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ============================================================ */
+/* Format selector dropdown                                     */
+/* ============================================================ */
+#fmt-dropdown {
+    position: fixed;
+    z-index: 9999;
+    background: rgba(15, 23, 42, 0.97);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    padding: 6px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 190px;
+}
+
+#fmt-dropdown.open {
+    display: flex;
+}
+
+.fmt-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    text-align: left;
+    width: 100%;
+}
+
+.fmt-opt:hover {
+    background: rgba(59,130,246,0.2);
+    color: var(--text-primary);
+}
+
+.fmt-opt i {
+    width: 16px;
+    text-align: center;
+    color: var(--accent);
+}
+/* ============================================================ */
+/* Ferramentas SIG                                              */
+/* ============================================================ */
+.sig-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.tool-item {
+    display: flex;
+    width: 100%;
+}
+
+.btn-tool {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-tool:hover {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.6);
+}
+
+.btn-tool:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+}
+
+.btn-tool i {
+    color: var(--accent);
+}
+
+.btn-tool:disabled i {
+    color: rgba(255, 255, 255, 0.4);
+}

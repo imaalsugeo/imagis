@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS - Geoportal</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet Geoman CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="glass-panel">
+            <div class="sidebar-header" style="text-align: center;">
+                <div class="logos-container" style="justify-content: center; align-items: center;">
+                    <img src="/data/Logos/GOVERNO.png" alt="Governo Logo" class="logo">
+                    <a href="https://www2.ima.al.gov.br/" target="_blank" style="display: flex;">
+                        <img src="/data/Logos/IMA.png" alt="IMA Logo" class="logo" style="cursor: pointer;">
+                    </a>
+                </div>
+                <h1>IMAGIS</h1>
+                <p class="subtitle">Supervisão de Geoprocessamento (IMA-AL)</p>
+            </div>
+            
+            <div class="sidebar-content">
+                <!-- Basemaps -->
+                <div class="control-group">
+                    <h2><i class="fa-solid fa-layer-group"></i> Mapas Base</h2>
+                    <div class="basemap-options">
+                        <label class="radio-container">
+                            <input type="radio" name="basemap" value="osm" checked>
+                            <span class="radio-checkmark"></span>
+                            OpenStreetMap
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="basemap" value="satellite">
+                            <span class="radio-checkmark"></span>
+                            Satélite (Esri)
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="basemap" value="dark">
+                            <span class="radio-checkmark"></span>
+                            Dark Mode
+                        </label>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Camadas -->
+                <div class="control-group">
+                    <h2><i class="fa-solid fa-map"></i> Camadas</h2>
+                    
+                    <!-- Accordions for categories -->
+                    
+                    <!-- Malhas Territoriais -->
+                    <details class="category-accordion" open>
+                        <summary>Malhas Territoriais</summary>
+                        <div class="layer-list" id="layer-list-malhas">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </details>
+
+                    <!-- Geoambientais -->
+                    <details class="category-accordion">
+                        <summary>Geoambientais</summary>
+                        <div class="layer-list" id="layer-list-geo">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </details>
+
+                    <!-- Hidrografia -->
+                    <details class="category-accordion">
+                        <summary>Hidrografia</summary>
+                        <div class="layer-list" id="layer-list-hidrografia">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </details>
+
+                    <!-- Restrições -->
+                    <details class="category-accordion">
+                        <summary>Restrições</summary>
+                        <div class="layer-list" id="layer-list-restricoes">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </details>
+
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Ferramentas SIG -->
+                <div class="control-group">
+                    <div class="sig-tools">
+                        <div class="tool-item">
+                            <label for="kml-upload" class="btn-tool"><i class="fa-solid fa-file-import"></i> Inserir KML Próprio</label>
+                            <input type="file" id="kml-upload" accept=".kml" style="display:none;">
+                        </div>
+                        <div class="tool-item">
+                            <button id="btn-export-draw" class="btn-tool" disabled><i class="fa-solid fa-file-export"></i> Exportar Desenho (KML)</button>
+                        </div>
+                        <div class="tool-item" style="margin-top: 10px;">
+                            <a href="https://drive.google.com/drive/folders/1V9sEamUS8afhltSpiqzwX920MllF4anG" target="_blank" class="btn-tool" style="text-decoration: none; background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4);">
+                                <i class="fa-brands fa-google-drive"></i> Base de Dados Completa
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="hidden">
+                <i class="fa-solid fa-spinner fa-spin"></i> Carregando dados...
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <main id="map"></main>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Leaflet Geoman JS -->
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+    
+    <!-- togeojson (Parse KML to GeoJSON) -->
+    <script src="https://unpkg.com/@tmcw/togeojson@4.5.0/dist/togeojson.umd.js"></script>
+    
+    <!-- tokml (Parse GeoJSON to KML) -->
+    <script src="https://unpkg.com/tokml@0.4.0/tokml.js"></script>
+
+    <!-- sql.js para geração de GeoPackage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
+
+    <!-- Custom JS -->
+    <script src="app.js?v=7"></script>
+</body>
+</html>
