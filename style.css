@@ -35,8 +35,8 @@ body {
     z-index: 1;
 }
 
-/* Sidebar / Glassmorphism Panel */
 #sidebar {
+    position: relative;
     width: 380px;
     height: 100%;
     background: var(--panel-bg);
@@ -47,7 +47,7 @@ body {
     flex-direction: column;
     z-index: 1000;
     box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, margin-left 0.3s ease;
 }
 
 .sidebar-header {
@@ -496,48 +496,56 @@ body {
 }
 
 /* ============================================================ */
-/* Responsividade (Mobile)                                      */
+/* Responsividade e Toggle da Sidebar                           */
 /* ============================================================ */
 
-#mobile-menu-btn {
-    display: none;
+#sidebar-toggle {
     position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 2000;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
+    right: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 50px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: background 0.3s;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.2);
+    z-index: 2000;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.2s, right 0.3s ease;
 }
 
-#mobile-menu-btn:hover {
-    background: var(--accent-hover);
+#sidebar-toggle:hover {
+    background: var(--accent);
 }
 
-@media (max-width: 768px) {
-    #mobile-menu-btn {
-        display: block;
-    }
+/* Estado Fechado no Desktop (usando margin-left no flex container) */
+#sidebar.sidebar-closed {
+    margin-left: -380px;
+}
 
+/* Responsividade para Telas Menores */
+@media (max-width: 1024px) {
     #sidebar {
         position: absolute;
         left: 0;
         top: 0;
-        transform: translateX(-100%);
         width: 320px;
         max-width: 85vw;
         height: 100vh;
         z-index: 3000;
+        transition: transform 0.3s ease;
     }
-
-    #sidebar.sidebar-open {
-        transform: translateX(0);
+    
+    #sidebar.sidebar-closed {
+        margin-left: 0; 
+        transform: translateX(-100%);
     }
 }

@@ -756,31 +756,46 @@ kmlUploadInput.addEventListener('change', (e) => {
 });
 
 // ============================================================
-// Responsividade: Mobile Menu Toggle
+// Responsividade: Menu Toggle (Desktop e Mobile)
 // ============================================================
-const mobileBtn = document.getElementById('mobile-menu-btn');
+const sidebarToggleBtn = document.getElementById('sidebar-toggle');
 const sidebar = document.getElementById('sidebar');
+const initialIcon = sidebarToggleBtn.querySelector('i');
 
-mobileBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('sidebar-open');
+// Em telas menores, iniciar a barra lateral fechada
+if (window.innerWidth <= 1024) {
+    sidebar.classList.add('sidebar-closed');
+    initialIcon.classList.remove('fa-chevron-left');
+    initialIcon.classList.add('fa-chevron-right');
+} else {
+    // No desktop inicia aberta
+    initialIcon.classList.remove('fa-chevron-right');
+    initialIcon.classList.add('fa-chevron-left');
+}
+
+sidebarToggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-closed');
     
     // Trocar ícone
-    const icon = mobileBtn.querySelector('i');
-    if (sidebar.classList.contains('sidebar-open')) {
-        icon.classList.remove('fa-bars');
-        icon.classList.add('fa-times');
+    const icon = sidebarToggleBtn.querySelector('i');
+    if (sidebar.classList.contains('sidebar-closed')) {
+        icon.classList.remove('fa-chevron-left');
+        icon.classList.add('fa-chevron-right');
     } else {
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-chevron-right');
+        icon.classList.add('fa-chevron-left');
     }
+    
+    // Recalcular o tamanho do mapa após a transição
+    setTimeout(() => { map.invalidateSize(); }, 300);
 });
 
 // Fechar menu ao clicar no mapa em telas pequenas
 map.on('click', () => {
-    if (window.innerWidth <= 768 && sidebar.classList.contains('sidebar-open')) {
-        sidebar.classList.remove('sidebar-open');
-        const icon = mobileBtn.querySelector('i');
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
+    if (window.innerWidth <= 1024 && !sidebar.classList.contains('sidebar-closed')) {
+        sidebar.classList.add('sidebar-closed');
+        const icon = sidebarToggleBtn.querySelector('i');
+        icon.classList.remove('fa-chevron-left');
+        icon.classList.add('fa-chevron-right');
     }
 });

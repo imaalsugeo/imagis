@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
     <div id="app">
@@ -125,12 +125,12 @@
             <div id="loading-indicator" class="hidden">
                 <i class="fa-solid fa-spinner fa-spin"></i> Carregando dados...
             </div>
+            
+            <!-- Toggle Button attached to Sidebar -->
+            <button id="sidebar-toggle" aria-label="Recolher menu">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
         </aside>
-
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" aria-label="Abrir menu">
-            <i class="fa-solid fa-bars"></i>
-        </button>
 
         <!-- Map Container -->
         <main id="map"></main>
@@ -152,6 +152,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
 
     <!-- Custom JS -->
-    <script src="app.js?v=7"></script>
+    <script src="app.js?v=8"></script>
 </body>
 </html>
