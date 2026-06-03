@@ -2,7 +2,7 @@
 // Download GeoJSON
 // ============================================================
 async function downloadLayerAsGeoJSON(folder, file, layerName) {
-    const url = `/data/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
+    const url = `${encodeURIComponent(folder)}/${encodeURIComponent(file)}`;
     try {
         const resp = await fetch(url, { cache: 'no-store' });
         if (!resp.ok) throw new Error('Falha ao baixar');
@@ -72,7 +72,7 @@ async function downloadLayerAsGpkg(folder, file, layerName) {
     try {
         const [SQL, resp] = await Promise.all([
             getSql(),
-            fetch(`/data/${encodeURIComponent(folder)}/${encodeURIComponent(file)}`, { cache: 'no-store' })
+            fetch(`${encodeURIComponent(folder)}/${encodeURIComponent(file)}`, { cache: 'no-store' })
         ]);
         if (!resp.ok) throw new Error('Falha ao buscar dados');
         const geojson = await resp.json();
@@ -479,7 +479,7 @@ Object.keys(layersConfig).forEach(categoryKey => {
         checkbox.addEventListener('change', async (e) => {
             if (e.target.checked) {
                 // Carregar GeoJSON
-                const url = `/data/${encodeURIComponent(category.folder)}/${encodeURIComponent(layer.file)}`;
+                const url = `${encodeURIComponent(category.folder)}/${encodeURIComponent(layer.file)}`;
                 setLoading(true);
                 
                 try {
