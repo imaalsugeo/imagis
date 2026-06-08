@@ -21,19 +21,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css?v=10">
+    <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
     <div id="app">
         <!-- Sidebar -->
         <aside id="sidebar" class="glass-panel">
             <div class="sidebar-header" style="text-align: center;">
-                <div class="logos-container" style="justify-content: center; align-items: center;">
-                    <img src="Logos/GOVERNO.png" alt="Governo Logo" class="logo">
-                    <a href="https://www2.ima.al.gov.br/" target="_blank" style="display: flex;">
-                        <img src="Logos/IMA.png" alt="IMA Logo" class="logo" style="cursor: pointer;">
-                    </a>
-                </div>
+                <h3 style="margin-bottom: 15px; font-weight: 600; font-size: 1.05rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.5px;">Instituto do Meio Ambiente de Alagoas</h3>
                 <h1>IMAGIS</h1>
                 <p class="subtitle">Supervisão de Geoprocessamento (IMA-AL)</p>
             </div>
@@ -101,6 +96,14 @@
                         </div>
                     </details>
 
+                    <!-- Monitoramento e Fiscalização -->
+                    <details class="category-accordion">
+                        <summary>Monitoramento e Fiscalização</summary>
+                        <div class="layer-list" id="layer-list-monitoramento">
+                            <!-- Injetado via JS -->
+                        </div>
+                    </details>
+
                 </div>
 
                 <div class="divider"></div>
@@ -158,6 +161,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.2/sql-wasm.js"></script>
 
     <!-- App Logic -->
-    <script src="app.js?v=10"></script>
+    <script src="app.js?v=12"></script>
 </body>
 </html>

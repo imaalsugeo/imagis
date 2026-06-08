@@ -225,7 +225,7 @@ const layersConfig = {
         containerId: "layer-list-malhas",
         list: [
             { name: "Mesorregiões", file: "Mesorregioes.geojson" },
-            { name: "Microrregiões", file: "Microrregioes.geojson" },
+            { name: "Microregiões", file: "Microrregioes.geojson" },
             { name: "Municípios", file: "Municipios.geojson" }
         ]
     },
@@ -254,7 +254,6 @@ const layersConfig = {
         list: [
             { name: "Aldeias", file: "Aldeias.geojson" },
             { name: "Área Acordo IMA MPF", file: "Area_Acordo_IMA_MPF.geojson" },
-            { name: "Áreas Embargadas", file: "Areas_Embargadas.geojson" },
             { name: "Áreas Quilombolas", file: "Areas_Quilombolas.geojson" },
             { name: "Dunas do Cavalo Russo", file: "Dunas_do_Cavalo_Russo.geojson" },
             { name: "Ferrovias", file: "Ferrovias.geojson" },
@@ -265,12 +264,23 @@ const layersConfig = {
             { name: "Manguezal", file: "Manguezal.geojson" },
             { name: "Sítios Arqueológicos", file: "Sitios_Arqueologicos.geojson" },
             { name: "Terreno de Marinha", file: "Terreno_de_Marinha.geojson" },
+            { name: "Terras Indígenas", file: "Terras_Indigenas.geojson" },
             { name: "Unidades de Conservação", file: "Unidades_de_Conservacao.geojson" },
             { name: "ZA Esec Curral do Meio", file: "ZA_Esec_Curral_do_Meio.geojson" },
             { name: "ZA Esec de Murici", file: "ZA_Esec_de_Murici.geojson" },
             { name: "ZA MONA do São Francisco", file: "ZA_MONA_do_Sao_Francisco.geojson" },
             { name: "ZA RVS Craúna", file: "ZA_RVS_Crauna.geojson" },
             { name: "ZA Rebio PedraTalhada", file: "ZA_Rebio_PedraTalhada.geojson" }
+        ]
+    },
+    monitoramento: {
+        folder: "Monitoramento e Fiscalizacao",
+        containerId: "layer-list-monitoramento",
+        list: [
+            { name: "Áreas Analisadas - Licenciamento", file: "Areas_Analisadas_Licenciamento.geojson" },
+            { name: "Áreas Embargadas", file: "Areas_Embargadas.geojson" },
+            { name: "ASV Analisadas (Polígonos)", file: "ASV_Analisadas_Poligonos.geojson" },
+            { name: "ASV Analisadas (Pontos)", file: "ASV_Analisadas_Pontos.geojson" }
         ]
     }
 };
