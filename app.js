@@ -821,3 +821,66 @@ map.on('click', () => {
         icon.classList.add('fa-chevron-right');
     }
 });
+
+// ============================================================
+// Ferramentas SIG: Inserir Ponto por Coordenadas
+// ============================================================
+const btnAddByCoord = document.getElementById('btn-add-by-coord');
+const coordLatInput = document.getElementById('coord-lat');
+const coordLngInput = document.getElementById('coord-lng');
+
+if (btnAddByCoord && coordLatInput && coordLngInput) {
+    btnAddByCoord.addEventListener('click', () => {
+        const latVal = coordLatInput.value.trim();
+        const lngVal = coordLngInput.value.trim();
+
+        if (latVal === '' || lngVal === '') {
+            alert('Por favor, digite tanto a Latitude quanto a Longitude.');
+            return;
+        }
+
+        // Suportar tanto ponto quanto vírgula como separador decimal
+        const lat = parseFloat(latVal.replace(',', '.'));
+        const lng = parseFloat(lngVal.replace(',', '.'));
+
+        if (isNaN(lat) || lat < -90 || lat > 90) {
+            alert('Latitude inválida! Deve ser um número entre -90 e 90.');
+            return;
+        }
+
+        if (isNaN(lng) || lng < -180 || lng > 180) {
+            alert('Longitude inválida! Deve ser um número entre -180 e 180.');
+            return;
+        }
+
+        // Criar o marcador no mapa
+        const marker = L.marker([lat, lng]);
+
+        // Adicionar ao FeatureGroup de desenhos (drawnItems) para permitir exportação em KML
+        drawnItems.addLayer(marker);
+        updateExportButtonState();
+
+        // Ouvir remoção da camada
+        marker.on('pm:remove', () => {
+            drawnItems.removeLayer(marker);
+            updateExportButtonState();
+        });
+
+        // Configurar e abrir Popup
+        marker.bindPopup(`
+            <div style="font-family: var(--font-main); font-size: 0.88rem; line-height: 1.4;">
+                <h4 style="margin: 0 0 6px 0; color: #3b82f6; font-size: 0.95rem;">Ponto Inserido</h4>
+                <strong>Lat:</strong> ${lat.toFixed(6)}<br>
+                <strong>Lng:</strong> ${lng.toFixed(6)}
+            </div>
+        `).openPopup();
+
+        // Centralizar mapa e dar zoom
+        map.setView([lat, lng], 14);
+
+        // Limpar campos de entrada
+        coordLatInput.value = '';
+        coordLngInput.value = '';
+    });
+}
+

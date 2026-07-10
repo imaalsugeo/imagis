@@ -4,7 +4,7 @@ import os
 import urllib.parse
 
 PORT = 8000
-DATA_DIR = r"H:\Meu Drive\08_Dashboards\06_GEOPORTAL"
+DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def translate_path(self, path):
@@ -33,6 +33,8 @@ with socketserver.TCPServer(("localhost", PORT), CustomHandler) as httpd:
     print(f" Mapeando a rota /data/ para: {DATA_DIR}")
     print("=====================================================")
     try:
+        import webbrowser
+        webbrowser.open(f"http://localhost:{PORT}")
         httpd.serve_forever()
     except KeyboardInterrupt:
         print("\nServidor encerrado.")
